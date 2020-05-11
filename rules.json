@@ -1,0 +1,7 @@
+{
+    "bash":{
+        "full":"main.sh",
+        "ext":"",
+        "cmd":"clear; bash $fn ${ws}test_dir"
+    }
+}
