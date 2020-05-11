@@ -11,32 +11,30 @@ if [[ "${root_dir:${#root_dir}-1:1}" != "/" ]];then
     root_dir=${root_dir}/
 fi
 
-mkdir -p /tmp/checked_file
+mkdir /tmp/checked_file
 
 #@git: <traverse dir>
-echo `pwd`
-echo $root_dir
-echo $0
+#echo `pwd`
+#echo $root_dir
+#echo $0
 script_root=$(dirname $0)/../
-echo $script_root
+#echo $script_root
 read_dir(){
     for f in `ls $root_dir`; do
         echo ----
         echo $f 
         #@git: if checked file or dir is effective
         abs_f=${root_dir}$f
-        mv $abs_f /tmp/checked_file
-        echo $abs_f
+        mv $abs_f /tmp/checked_file/
+        #echo $abs_f
         dir0=$(dirname $abs_f)
-        base=$(basename $abs_f)
-        mv $abs_f /tmp/checked_file
-        source $(dirname $0)/../test/test_function.sh
+        source ${script_root}test/test_function.sh
         result=$?
-        echo $result
         if [ $result -eq 1 ]; then
-            :
+            echo branch1 $result
         else
-            mv /tmp/checked_file/$base $dir0
+            echo branch2 $result
+            mv /tmp/checked_file/$f $dir0
         fi
     done
 }
