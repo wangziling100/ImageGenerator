@@ -14,15 +14,23 @@ fi
 mkdir -p /tmp/checked_file
 
 #@git: <traverse dir>
+echo `pwd`
+echo $root_dir
+echo $0
+script_root=$(dirname $0)/../
+echo $script_root
 read_dir(){
     for f in `ls $root_dir`; do
+        echo ----
+        echo $f 
         #@git: if checked file or dir is effective
-        mv $f /tmp/checked_file
         abs_f=${root_dir}$f
+        mv $abs_f /tmp/checked_file
         echo $abs_f
         dir0=$(dirname $abs_f)
         base=$(basename $abs_f)
-        source ${ws}test/test_function.sh
+        mv $abs_f /tmp/checked_file
+        source $(dirname $0)/../test/test_function.sh
         result=$?
         echo $result
         if [ $result -eq 1 ]; then
