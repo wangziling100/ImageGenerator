@@ -13,10 +13,11 @@ fi
 
 #@git: <traverse dir>
 read_dir(){
-    for f in 'ls $root_dir'; do
+    for f in `ls $root_dir`; do
         #@git: if checked file or dir is effective
-
+        echo $f
     done
 }
+read_dir $root_dir
 
 # delete selected file or subdir, and test if the project runs rightly
