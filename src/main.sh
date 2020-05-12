@@ -11,7 +11,7 @@ if [[ "${root_dir:${#root_dir}-1:1}" != "/" ]];then
     root_dir=${root_dir}/
 fi
 #@git: <build env>
-docker run -v $HOME/workspace:/workspace -it --name image-gen alpine bash &
+#docker run -v $HOME/workspace:/workspace -it --name image-gen alpine bash &
 
 mkdir /tmp/checked_file
 
@@ -21,14 +21,15 @@ mkdir /tmp/checked_file
 #echo $0
 script_root=$(dirname $0)/../
 #echo $script_root
+report=${script_root}delete_list.report
+touch $report
 read_dir(){
-    for f in `ls $root_dir`; do
+    for f in `ls $1`; do
         echo ----
         echo $f 
         #@git: if checked file or dir is effective
-        abs_f=${root_dir}$f
+        abs_f=$1$f
         mv $abs_f /tmp/checked_file/
-        #echo $abs_f
         dir0=$(dirname $abs_f)
         source ${script_root}test/test_function.sh
         result=$?
@@ -38,6 +39,11 @@ read_dir(){
             mv /tmp/checked_file/$f $dir0
         else
             echo branch2 $result
+            echo "  rm ${dir0}/$f &&\\" >> $report
+        fi
+        echo $f
+        if [[ -d $f ]] ; then
+            read_dir $1$f
         fi
     done
 }
@@ -45,5 +51,5 @@ read_dir $root_dir
 
 # delete selected file or subdir, and test if the project runs rightly
 rm -r /tmp/checked_file
-docker container stop image-gen
-docker container rm image-gen
+#docker container stop image-gen
+#docker container rm image-gen
