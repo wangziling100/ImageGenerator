@@ -29,6 +29,7 @@ read_dir(){
         echo $f 
         #@git: if checked file or dir is effective
         abs_f=$1$f
+        echo $1 $f
         mv $abs_f /tmp/checked_file/
         dir0=$(dirname $abs_f)
         source ${script_root}test/test_function.sh
@@ -42,8 +43,8 @@ read_dir(){
             echo "  rm ${dir0}/$f &&\\" >> $report
         fi
         echo $f
-        if [[ -d $f ]] ; then
-            read_dir $1$f
+        if [[ -d $1$f ]] ; then
+            read_dir $1$f/
         fi
     done
 }
